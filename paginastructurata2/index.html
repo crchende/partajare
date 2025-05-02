@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf8">
+        <title>Meniu si continut 1</title>
+        <style>
+            body {
+                font: 12pt Verdana, Arial, Georgia, sans-serif;
+            }
+            nav {
+                width: 180px;
+                float: left;
+                margin-top: 12px;
+                margin-right: 18px;
+            }
+            nav ul {
+                list-style: none;
+                margin: 12px 0px 0px 0px;
+                padding: 0px;
+            }
+            nav li {
+                border-bottom: 1px solid #ffffff;
+            }
+            nav button {
+                margin: 0px;
+                padding: 0px;
+                width: 180px;
+                font-size: 12pt;
+                font-weight: bold;
+                display: block;
+                padding: 3px 0px 3px 3px;
+                background-color: #628794;
+                color: #ffffff;
+            }
+            nav li a:link, nav li a:visited {
+                font-size: 12pt;
+                font-weight: bold;
+                display: block;
+                padding: 3px 0px 3px 3px;
+                background-color: #628794;
+                color: #ffffff;
+            }
+            nav li a:hover, nav li a:active {
+                font-size: 12pt;
+                font-weight: bold;
+                display: block;
+                padding: 3px 0px 3px 3px;
+                background-color: #c1a02e;
+                color: #000000;
+            }
+            nav ul ul {
+                margin: 0px;
+                padding: 0px;
+                border-bottom: 1px solid #ffffff;
+            }
+            nav ul ul li {
+                border-bottom: none;
+            }
+            nav ul ul li a:link, nav ul ul li a:visited {
+                font-size: 10pt;
+                font-weight: bold;
+                display: block;
+                padding: 3px 0px 3px 18px;
+                background-color: #628794;
+                color: #ffffff;
+            }
+            nav ul ul li a:hover, nav ul ul li a:active {
+                font-size: 10pt;
+                font-weight: bold;
+                display: block;
+                padding: 3px 0px 3px 18px;
+                background-color: #c1a02e;
+                color: #000000;
+            }
+            section {
+                width: 600px;
+                float: left;
+            }
+            nav a {
+                text-decoration: none;
+            }
+            section ul li a {
+                text-decoration: none;
+                font-weight: bold;
+            }
+            footer{
+                width: 100%;
+                background-color:aliceblue;
+                margin: 20px 0px 20px;
+                text-align:center;
+            }
+
+            .pannels [role="tabpanel"].is-hidden {
+                display: none
+            }
+
+            .manual [role="tab"][aria-selected="true"] {
+                background-color: #71a03e;
+                color: #000000;
+            }
+
+            /*stilizare capitol 2 - navigare etape*/
+            #navigare-poze-c22 {
+                width: 100%;
+                background-color:antiquewhite;
+                vertical-align: middle;
+                display: flex;
+            }
+            button {
+                width: 100px;
+                height: 100px;
+            }
+            button .img-buton-navigare {
+                width: 95px;
+                height: 95px;
+            }
+            button#btn-imaginea-anterioara {
+                vertical-align: center;
+                color: red;
+            }
+            #div-poza-curenta {
+                border: 1px solid lightgreen;
+                vertical-align: center;
+                text-align:center;
+                flex: auto;
+            }
+            button#btn-imaginea-urmatoare {
+                color: blue;
+                /*background-color: blue;*/
+                /*pointer-events: none;*/
+            }
+            #div-poza-curenta [role="img-etapa"][aria-selected="false"] {
+                display: none;
+            }
+        </style>
+
+        <script type="text/javascript">
+            
+            "use strict";
+            class TabsManual {
+                /*
+                *   This content is licensed according to the W3C Software License at
+                *   https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
+                *
+                *   File:   tabs-manual.js
+                *
+                *   Desc:   Tablist widget that implements ARIA Authoring Practices
+                */
+                constructor(groupNode) {
+                    this.tablistNode = groupNode;
+                
+                    this.tabs = [];
+                
+                    this.firstTab = null;
+                    this.lastTab = null;
+                
+                    this.tabs = Array.from(this.tablistNode.querySelectorAll("[role=tab]"));
+                    console.log(this.tabs)
+                    this.tabpanels = [];
+                
+                    for (let i = 0; i < this.tabs.length; i += 1) {
+                        const tab = this.tabs[i];
+                        const tabpanel = document.getElementById (
+                            tab.getAttribute("aria-controls")
+                        );
+                
+                        tab.tabIndex = -1;
+                        tab.setAttribute("aria-selected", "false");
+                        this.tabpanels.push(tabpanel);
+                        
+                        tab.addEventListener("click", this.onClick.bind(this));
+                    
+                        if (!this.firstTab) {
+                            this.firstTab = tab;
+                        }
+                        this.lastTab = tab;
+                    }
+                    console.log(this.tabpanels)
+                    this.setSelectedTab(this.firstTab);
+                }
+            
+                setSelectedTab(currentTab) {
+                    for (let i = 0; i < this.tabs.length; i += 1) {
+                        const tab = this.tabs[i];
+                        if (currentTab === tab) {
+                            tab.setAttribute("aria-selected", "true");
+                            tab.removeAttribute("tabindex");
+                            this.tabpanels[i].classList.remove("is-hidden");
+                        } else {
+                            tab.setAttribute("aria-selected", "false");
+                            tab.tabIndex = -1;
+                            this.tabpanels[i].classList.add("is-hidden");
+                        }
+                    }
+                }
+
+                /* EVENT HANDLERS */
+                // Since this example uses buttons for the tabs, the click onr also is activated
+                // with the space and enter keys
+                onClick(event) {
+                    //alert("salut");
+                    this.setSelectedTab(event.currentTarget);
+                }
+            }
+            
+            class NavigareImagini {
+                constructor(groupNode) {
+                    
+                    /* detectarea butoanelor de navigare imagini*/
+                    this.btn_img_anterioara = document.querySelectorAll("[id=btn-imaginea-anterioara")[0];
+                    this.btn_img_urmatoare = document.querySelectorAll("[id=btn-imaginea-urmatoare")[0];
+                    console.log(this.btn_img_anterioara);
+                    console.log(this.btn_img_urmatoare);
+                    this.btn_img_anterioara.addEventListener("click", this.onClick.bind(this))
+                    this.btn_img_urmatoare.addEventListener("click", this.onClick.bind(this))
+
+                    /* initializare obiecte imagini */
+                    this.grupPoze = groupNode;
+                    this.poze = []
+
+                    this.primaPoza = null;
+                    this.ultimaPoza = null;
+                    /* detectare imagini */
+                    this.poze = Array.from(this.grupPoze.querySelectorAll("[role=img-etapa]"))
+                    console.log(this.poze)
+                    for(let i = 0; i < this.poze.length; i += 1) {
+                        const poza = this.poze[i]
+                        if(this.primaPoza == null) {
+                            this.primaPoza = poza;
+                        }
+                        this.ultimaPoza = poza;
+                    }
+                    this.pozaCurenta = this.primaPoza;
+                }
+                actiuneButon(obiectButon) {
+                    console.log(obiectButon);
+                    let indexPozaCurenta = this.poze.indexOf(this.pozaCurenta);
+                    console.log(indexPozaCurenta);
+                    if(obiectButon.id === "btn-imaginea-anterioara") {
+                        this.btn_img_urmatoare.setAttribute("style", "background-color: initial")
+                        if(this.pozaCurenta != this.primaPoza) {
+                            //ascundem poza curenta
+                            this.pozaCurenta.setAttribute("aria-selected", "false");
+                            //selectam noua poza curenta
+                            this.pozaCurenta = this.poze[indexPozaCurenta - 1];
+                            this.pozaCurenta.setAttribute("aria-selected", "true");
+                        } else {
+                            obiectButon.setAttribute("style", "pointer-events: none; background-color: red;");
+                        }
+                    } else if(obiectButon.id === "btn-imaginea-urmatoare") {
+                        this.btn_img_anterioara.setAttribute("style", "background-color: initial")
+                        if(this.pozaCurenta != this.ultimaPoza) {
+                            //ascundem poza curenta
+                            this.pozaCurenta.setAttribute("aria-selected", "false");
+                            //selectam noua poza curenta
+                            this.pozaCurenta = this.poze[indexPozaCurenta + 1];
+                            this.pozaCurenta.setAttribute("aria-selected", "true");
+                        } else {
+                            obiectButon.setAttribute("style", "pointer-events: none; background-color: red");
+                        }
+                    }
+                    
+                }
+                onClick(event) {
+                    this.actiuneButon(event.currentTarget)
+                }
+            }
+
+            // Initialize tablist
+            
+            window.addEventListener("load", function () {
+                const tablists = document.querySelectorAll("[role=tablist].manual");
+                console.log(tablists)
+                for (let i = 0; i < tablists.length; i++) {
+                    new TabsManual(tablists[i]);
+                }
+                const grup_poze_de_afisat = document.querySelectorAll("[role=grup-poze-de-afisat]")
+                new NavigareImagini(grup_poze_de_afisat[0]);
+            });
+        </script>
+
+    </head>
+    <body>
+        <nav>
+           <ul role="tablist" class="manual">
+            <!--<li><button id="buton-acasa" type="button" role="tab" aria-selected="true" aria-controls="continut-acasa">Acasa</a></li>-->
+            <li><a href="#" id="link-acasa" role="tab" aria-selected="true" aria-controls="continut-acasa">Acasa</a></li>
+            <li><a href="#" id="link-capitol1" role="tab" aria-selected="false" aria-controls="continut-capitol1">Capitol1</a></li>
+            <li><a href="#" id="link-capitol2" role="tab" aria-selected="false" aria-controls="continut-capitol2">Capitol2</a></li>
+            <ul>
+                <li><a href="#" id="link-capitol2.1" role="tab" aria-selected="false" aria-controls="continut-capitol2.1">&raquo; Capitol2.1</a></li>
+                <li><a href="#" id="link-capitol2.2" role="tab" aria-selected="false" aria-controls="continut-capitol2.2">&raquo; Capitol2.2</a></li>
+                <li><a href="#" id="link-capitol2.3" role="tab" aria-selected="false" aria-controls="continut-capitol2.3">&raquo; Capitol2.3</a></li>
+                <li><a href="#" id="link-capitol2.4" role="tab" aria-selected="false" aria-controls="continut-capitol2.4">&raquo; Capitol2.4</a></li>
+            </ul>
+            <li><a href="#" id="link-capitol3" role="tab" aria-selected="false" aria-controls="continut-capitol3">Capitol3</a></li>
+           </ul>
+        </nav>
+        <section class="pannels">
+            <div id="continut-acasa" role="tabpanel" aria-labeledby="link-acasa">
+                <header>
+                    <h1>Acasa</h1>
+                </header>
+                <p>
+                    Pe prima pagina este util sa se reia cuprinsul cu mai multe explicatii,
+                    cum ar fi:
+                </p>
+                <ul>
+                    <li>
+                        <a href="#">Acasa:</a>
+                        Prezentarea generala a paginii
+                    </li>
+                    <li>
+                        <a href="#">Capitol1:</a>
+                        Capitolul 1 cuprinde o introducere in acest subiect - privire generala
+                        utilitate, de ce am fac acest site.
+                    </li>
+                    <li>
+                        <a href="#">Capitolul2:</a>
+                        Capitolul 2 este practic continutul. Are mai multe subcapitole.
+                        Explica in detaliu ce se face, care sunt pasii de implementare etc.
+                    </li>
+                    <li>
+                        <a href="#">Contact us:</a>
+                        Here you can find multiple methods for contacting us 
+                        (and we really do care of what you have to say).
+                    </li>
+                </ul>
+            </div>
+
+            <div id="continut-capitol1" role="tabpanel" aria-labeledby="link-capitol1">
+                <header>
+                    <h1>Capitol1</h1>
+                </header>
+                <p>
+                    Primul paragraf
+                </p>
+                <p>
+                    al doilea paragraf
+                </p>
+                <p>
+                    <h3>TEXT copiat de pe net</h3>
+                    Pomicultura este știința care se ocupă cu studiul biologiei și tehnologiei speciilor pomicole, 
+                    în vederea realizării unor producții mari de fructe, relativ constante de la un an la altul, 
+                    de calitate superioară și profitabile în același timp.
+
+                    Etimologic, această denumire derivă de la latinescul pomus,-i, însemnând arbore fructifer 
+                    și cultura,-ae - îngrijire, cultivare.
+
+                    Pomicultura, ca disciplină aplicativă, alături de întregul profil agronomic, 
+                    s-a format ceva mai târziu, după consolidarea științelor fundamentale (biologia, fizica, chimia, biochimia). 
+                    Ea operează cu noțiunile și elementele de bază ale acestor științe, în vederea obținerii unor producții profitabile, 
+                    prin realizarea de ecosisteme pomicole artificiale adecvate.
+
+                    Pomicultura generală se ocupă cu studiul particularităților biologice și ecologice ale pomilor și arbuștilor fructiferi, 
+                    în interacțiunea lor cu factorii de mediu în funcție de care se stabilește tehnologia de obținere a materialului săditor pomicol, 
+                    de înființare și întreținere a plantațiilor, în vederea realizării de producții mari, relativ constante, de calitate superioară și 
+                    eficiente în același timp. Pomologia studiază soiurile de pomi și arbuști fructiferi, urmărind cu prioritate caracterele 
+                    morfologice, biologice și de producție ale acestora. Scopul activității desfășurate în domeniul științei pomicole este 
+                    realizarea producției de fructe. Fructele sunt produse indispensabile unei alimentații raționale, indiferent de categoria 
+                    de vârstă a populației. Ele se consumă cel mai adesea, așa cum le produce planta (fără o preparare culinară sau industrială). 
+                    În urma prelucrării fructelor (mâncăruri gătite, compoturi, gem, jeleuri etc.) se diminuează valoare inițială, 
+                    se reduce conținutul în vitamine etc.
+                </p>
+            </div>
+
+            <div id="continut-capitol2" role="tabpanel" aria-labeledby="link-capitol2">
+                <header>
+                    <h1>Capitol2</h1>
+                </header>
+                <p>
+                    Capitolul 2 este continutul articolului. Este structurat pe mai multe subcapitole:
+                </p>
+                <ul>
+                    <li>
+                        <a href="#">Capitol2.1</a>
+                        Scurta descriere a subcapitolului 2.2
+                    </li>
+                    <li>
+                        <a href="#">Capitol2.2:</a>
+                        Scurta descriere a subcapitolului 2.2
+                    </li>
+                    <li>
+                        <a href="#">Capitolul2.3:</a>
+                        Scurta descriere a subcapitolului 2.3
+                    </li>
+                    <li>
+                        <a href="#">Capitolul2.4:</a>
+                        Scurta descriere a subcapitolului 2.4
+                    </li>
+                </ul>
+            </div>
+
+            <div id="continut-capitol2.1" role="tabpanel" aria-labeledby="link-capitol2.1">
+                <header>
+                    <h1>Capitol2.1</h1>
+                </header>
+                <p>
+                    Primul paragraf din Capitolul 2.1 - de adaugat aici sau in alte paragrafe continutul complet.
+                </p>
+                <h3>Etapele de fabricatie a sapunului - imagine completa</h3>
+                <img src="imagini/cum_se_fabrica_sapunul_toate_fazele.jpg">
+            </div>
+            <div id="continut-capitol2.2" role="tabpanel" aria-labeledby="link-capitol2.2">
+                <header>
+                    <h1>Capitol2.2</h1>
+                </header>
+                <p>
+                    Afisare etapa cu etapa a procesului de fabricatie.
+                </p>
+                <p>
+                    Dati click pe butoane pentru a afisa imaginile:
+                </p>
+                <div id="navigare-poze-c22" role="navigare-poze">
+                    <button id="btn-imaginea-anterioara" role="btn-navigare-poze"><img class="img-buton-navigare" src="imagini/previous-97613_1280.webp"></button>
+                    <div id="div-poza-curenta" role="grup-poze-de-afisat">
+                        <img src="imagini/etapa1_adaugare_ingrediente.png" id="etapa1" role="img-etapa" aria-selected="true">
+                        <img src="imagini/etapa2_adaugare_arome_si_culoare.png" id="etapa2" role="img-etapa" aria-selected="false">
+                        <img src="imagini/etapa3_amestecare.png" id="etapa3" role="img-etapa" aria-selected="false">
+                        <img src="imagini/etapa4_turnare_in_forma.png" id="etapa4" role="img-etapa" aria-selected="false">
+                        <img src="imagini/etapa5_racire_lenta.png" id="etapa5" role="img-etapa" aria-selected="false">
+                        <img src="imagini/etapa6_taiere.png" id="etapa6" role="img-etapa" aria-selected="false">
+                        <img src="imagini/etapa7_uscare.png" id="etapa7" role="img-etapa" aria-selected="false">
+                        <img src="imagini/etapa8_sapunul_gata_de_folosit.png" id="etapa8" role="img-etapa" aria-selected="false">
+                    </div>
+                    <button id="btn-imaginea-urmatoare" role="btn-navigare-poze"><img class="img-buton-navigare"src="imagini/next-97612_640.webp"></button>
+                </div>
+            </div>
+            <div id="continut-capitol2.3" role="tabpanel" aria-labeledby="link-capitol2.3">
+                <header>
+                    <h1>Capitol2.3</h1>
+                </header>
+                <p>
+                    Primul paragraf din Capitolul 2.2 - de adaugat aici sau in alte paragrafe continutul complet.
+                </p>
+            </div>
+            <div id="continut-capitol2.4" role="tabpanel" aria-labeledby="link-capitol2.4">
+                <header>
+                    <h1>Capitol2.4</h1>
+                </header>
+                <p>
+                    Primul paragraf din Capitolul 2.4 - de adaugat aici sau in alte paragrafe continutul complet.
+                </p>
+            </div>
+
+
+            <div id="continut-capitol3" role="tabpanel" aria-labeledby="link-capitol3">
+                <header>
+                    <h1>Capitol3</h1>
+                </header>
+                <p>
+                    Primul paragraf
+                </p>
+                <p>
+                    al doilea paragraf
+                </p>
+                <p>
+                    <h3>Concluzii</h3>
+                    ... iar acestea sunt concluziile ...
+                </p>
+            </div>
+
+            <footer>@ echipa de redactie</footer>
+        </section>
+    </body>
+
+</html>
