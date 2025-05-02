@@ -1,10 +1,13 @@
 # Pagina WEB structurata
 
-# link public - pe netlify:
+## link public - pe netlify:
 
-https://paginastructurata2.netlify.app/
+Pagina este publicata pe site-ul de hosting: `app.netlify.com`: https://app.netlify.com.
+Poate fi vizualizata la link-ul:
+- https://paginastructurata2.netlify.app/
 
-### Exemplu pagina:
+Mai jos se poate vedea un exemplu de cum arata pagina - este selectat din meniu Capitolul2.2
+
 ![image](https://github.com/user-attachments/assets/1d03f259-e746-408d-8b3a-d7a388602657)
 
 
